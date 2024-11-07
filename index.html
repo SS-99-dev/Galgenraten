@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galgenraten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('img/gr-'); /* Hintergrundbild */
+            background-size: cover;
+        }
+        #wordDisplay {
+            font-size: 24px;
+            letter-spacing: 10px;
+        }
+        #message {
+            font-size: 18px;
+            color: red;
+        }
+        #endMessage {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: green;
+            display: none;
+        }
+        #hangman {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 200px;
+            height: auto;
+        }
+        #extraImage {
+            margin-top: 20px;
+            display: none; /* Zusatzbild wird erst eingeblendet, wenn nötig */
+        }
+        #hiddenInput {
+            position: absolute;
+            opacity: 0;
+        }
+        #restartButton {
+            margin-top: 20px;
+            display: none; /* Button ist versteckt, bis das Spiel endet */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Galgenraten</h1>
+
+    <!-- Eingabefeld und Button -->
+    <div id="startArea">
+        <label for="wordInput">Zu lösendes Wort eingeben:</label>
+        <input type="password" id="wordInput" maxlength="20">
+        <button onclick="startGame()">Spiel starten</button>
+    </div>
+
+    <div id="gameArea" style="display: none;">
+        <p id="wordDisplay"></p>
+        <label id="message"></label>
+        <p id="endMessage"></p>
+        <div id="hangman">
+            <img id="hangmanImage" src="img/gr-1.jpg" alt="Galgenraten-Bild">
+            <p>Falsche Versuche: <span id="wrongAttempts">0</span>/8</p>
+        </div>
+        <!-- Zusatzbild für spezielle Ereignisse -->
+        <div id="extraImage">
+            <img id="extraImageDisplay" src="img/gr-8.jpg" alt="Zusatzbild">
+        </div>
+    </div>
+
+    <!-- "Neues Spiel"-Button, um das Spiel neu zu starten -->
+    <button id="restartButton" onclick="restartGame()">Neues Spiel</button>
+
+    <!-- Verstecktes Eingabefeld zum Triggern der virtuellen Tastatur -->
+    <input type="text" id="hiddenInput" onfocus="focusInput()">
+
+    <script>
+        let wordToGuess = "";
+        let displayedWord = [];
+        let wrongGuesses = 0;
+        const maxWrongGuesses = 8;
+        let guessedLetters = [];
+
+        function startGame() {
+            wordToGuess = document.getElementById("wordInput").value.toLowerCase();
+            displayedWord = Array(wordToGuess.length).fill("_");
+            wrongGuesses = 0;
+            guessedLetters = [];
+            document.getElementById("wordDisplay").textContent = displayedWord.join(" ");
+            document.getElementById("wrongAttempts").textContent = wrongGuesses;
+            document.getElementById("message").textContent = "";
+
+            // Spielbereich anzeigen, Startbereich ausblenden
+            document.getElementById("gameArea").style.display = "block";
+            document.getElementById("startArea").style.display = "none";
+            document.getElementById("wordInput").value = ""; // Zurücksetzen des Eingabefelds
+            document.getElementById("hangmanImage").src = "img/gr-0.jpg"; // Reset des Galgenbilds
+            document.getElementById("extraImage").style.display = "none"; // Zusatzbild verstecken
+            document.getElementById("restartButton").style.display = "none"; // Button verstecken
+
+            // Verstecktes Eingabefeld fokussieren, um virtuelle Tastatur zu öffnen
+            document.getElementById("hiddenInput").focus();
+        }
+
+        function focusInput() {
+            // Verstecktes Input immer wieder fokussieren, damit die virtuelle Tastatur sichtbar bleibt
+            setTimeout(() => document.getElementById("hiddenInput").focus(), 50);
+        }
+
+        document.addEventListener("keydown", function(event) {
+            const letter = event.key.toLowerCase();
+            if (/^[a-z]$/.test(letter) && wordToGuess) {  // Prüfen, ob eine Buchstabentaste gedrückt wurde
+                if (guessedLetters.includes(letter)) {
+                    document.getElementById("message").textContent = `Der Buchstabe "${letter}" wurde bereits geraten.`;
+                } else {
+                    guessedLetters.push(letter);
+                    checkGuess(letter);
+                }
+            }
+        });
+
+        function checkGuess(letter) {
+            let correctGuess = false;
+            for (let i = 0; i < wordToGuess.length; i++) {
+                if (wordToGuess[i] === letter) {
+                    displayedWord[i] = letter;
+                    correctGuess = true;
+                }
+            }
+
+            if (correctGuess) {
+                document.getElementById("wordDisplay").textContent = displayedWord.join(" ");
+                document.getElementById("message").textContent = "";
+                checkWin();
+            } else {
+                wrongGuesses++;
+                document.getElementById("wrongAttempts").textContent = wrongGuesses;
+                document.getElementById("message").textContent = `Der Buchstabe "${letter}" ist nicht im Wort.`;
+                document.getElementById("hangmanImage").src = `img/gr-${wrongGuesses}.jpg`; // Galgenbild aktualisieren
+                checkLoss();
+            }
+        }
+
+        function checkWin() {
+            if (displayedWord.join("") === wordToGuess) {
+                document.getElementById("message").textContent = "Herzlichen Glückwunsch, du hast gewonnen!";
+                document.getElementById("gameArea").style.display = "none";
+                //document.getElementById("restartButton").style.display = "block"; // "Neues Spiel"-Button anzeigen
+
+                // Ein spezielles Bild einblenden, wenn der Spieler gewinnt
+                
+                
+                document.getElementById("extraImageDisplay").src = "img/gr-8.jpg";
+                document.getElementById("extraImage").style.display = "block";
+                document.getElementById("endMessage").textContent = "Gewonnen";
+                document.getElementById("endMessage").style.display = "block";
+            }
+        }
+
+        function checkLoss() {
+            if (wrongGuesses >= maxWrongGuesses) {
+                document.getElementById("message").textContent = `Du hast verloren! Das Wort war "${wordToGuess}".`;
+                document.getElementById("gameArea").style.display = "none";
+                document.getElementById("restartButton").style.display = "block"; // "Neues Spiel"-Button anzeigen
+
+                // Ein spezielles Bild einblenden, wenn der Spieler verliert
+                document.getElementById("extraImageDisplay").src = "img/header-zugeschnitten.jpg";
+                document.getElementById("extraImage").style.display = "block";
+                document.getElementById("endMessage").textContent = 'Verloren! Das Wort war"${wordToGuess}".';
+                document.getElementById("endMessage").style.display = "block";
+            }
+        }
+
+        function restartGame() {
+            // Alles zurücksetzen und das Eingabefeld für ein neues Spiel anzeigen
+            document.getElementById("startArea").style.display = "block";
+            document.getElementById("gameArea").style.display = "none";
+            document.getElementById("restartButton").style.display = "none"; // Button verstecken
+            document.getElementById("extraImage").style.display = "none"; // Zusatzbild verstecken
+            document.getElementById("message").textContent = ""; // Nachricht zurücksetzen
+            document.getElementById("endMessage").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
