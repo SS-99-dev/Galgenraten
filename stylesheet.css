@@ -1,0 +1,40 @@
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('img/gr-'); //erstmal nur zum Test
+            background-size: cover;
+        }
+        #wordDisplay {
+            font-size: 24px;
+            letter-spacing: 10px;
+        }
+        #message {
+            font-size: 18px;
+            color: red;
+        }
+        #endMessage {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: green;
+            display: none;
+        }
+        #hangman {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 200px;
+            height: auto;
+        }
+        #extraImage {
+            margin-top: 20px;
+            display: none;
+        }
+        #hiddenInput {
+            position: absolute;
+            opacity: 0;
+        }
+        #restartButton {
+            margin-top: 20px;
+            display: none;
+        }
