@@ -65,11 +65,11 @@
 
                 if (won) {
                         document.getElementById('result-message').textContent = 'Du hast gewonnen!';
-                        document.getElementById('hangman-image').src = 'gewonnen.jpg';
+                        document.getElementById('hangman-image').src = '/img/gewonnen.jpg';
                 } else {
                         document.getElementById('result-message').textContent = `Du hast verloren!
                         Das Wort war: "${word}".`;
-                        document.getElementById('hangman-image').src = 'gr-8.png';
+                        document.getElementById('hangman-image').src = '/img/gr-8.png';
                 }
         }
 
