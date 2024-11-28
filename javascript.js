@@ -4,13 +4,6 @@ let wordToGuess = "";
         const maxWrongGuesses = 8;
         let guessedLetters = [];
 
-        function Neustarten() {
-        let wordToGuess = "";
-        let displayedWord = [];
-        let wrongGuesses = 0;
-        const maxWrongGuesses = 8;
-        let guessedLetters = [];
-            startgame();
         }
         function startGame() {
             wordToGuess = document.getElementById("wordInput").value.toLowerCase();
