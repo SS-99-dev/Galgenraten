@@ -26,7 +26,7 @@
         });
 
         function guessLetter() {
-            consinput = document.getElementById('letter-input');
+            const input = document.getElementById('letter-input');
             const guessedLetter = input.value.toLowerCase();
             input.value = '';
 
