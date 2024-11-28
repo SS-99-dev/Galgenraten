@@ -62,9 +62,15 @@
         function endGame(won) {
             document.getElementById('game-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'block';
-            document.getElementById('result-message').textContent = won
-                ? 'Glückwunsch! Du hast gewonnen!'
-                : `Du hast verloren! Das Wort war: "${word}".`;
+
+                if (won) {
+                        document.getElementById('result-message').textContent = 'Du hast gewonnen!';
+                        document.getElementById('hangman-image').src = 'gewonnen.jpg';
+                } else {
+                        document.getElementById('result-message').textContent = `Du hast verloren!
+                        Das Wort war: "${word}".`;
+                        document.getElementById('hangman-image').src = 'gr-8.png';
+                }
         }
 
         function restartGame() {
@@ -75,7 +81,7 @@
             document.getElementById('word-input').value = '';
             document.getElementById('hidden-word').innerHTML = '';
             document.getElementById('wrong-letters').textContent = '';
-            document.getElementById('hangman-image').src = '/img/gewonnen.jpg';
+            document.getElementById('hangman-image').src = '/img/gr-8.png';
             document.getElementById('setup-area').style.display = 'block';
             document.getElementById('game-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'none';
