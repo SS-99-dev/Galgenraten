@@ -43,7 +43,7 @@
                 wrongLetters.push(guessedLetter);
                 attempts++;
                 document.getElementById('wrong-letters').textContent = wrongLetters.join(', ');
-                document.getElementById('hangman-image').src = `gr-${attempts}.png`;
+                document.getElementById('hangman-image').src = `/img/gr-${attempts}.png`;
             }
 
             document.getElementById('hidden-word').innerHTML = hiddenWord
@@ -73,7 +73,7 @@
             document.getElementById('word-input').value = '';
             document.getElementById('hidden-word').innerHTML = '';
             document.getElementById('wrong-letters').textContent = '';
-            document.getElementById('hangman-image').src = 'gr-0.png';
+            document.getElementById('hangman-image').src = '/img/gr-0.png';
             document.getElementById('setup-area').style.display = 'block';
             document.getElementById('game-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'none';
