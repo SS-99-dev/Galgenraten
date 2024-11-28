@@ -1,4 +1,4 @@
-let wordToGuess = "";
+        let wordToGuess = "";
         let displayedWord = [];
         let wrongGuesses = 0;
         const maxWrongGuesses = 8;
