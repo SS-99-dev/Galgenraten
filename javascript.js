@@ -20,7 +20,9 @@
         }
 
         document.getElementById('letter-input').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') guessLetter();
+            if (e.key === 'Enter') {
+                    guessLetter();
+            }
         });
 
         function guessLetter() {
