@@ -5,7 +5,7 @@
         let guessedLetters = [];
 
         }
-        !function startGame() {
+        function startGame() {
             wordToGuess = document.getElementById("wordInput").value.toLowerCase();
             displayedWord = Array(wordToGuess.length).fill("_");
             wrongGuesses = 0;
